@@ -176,7 +176,11 @@ export const loginUserApi = (data: TLoginData) =>
       return Promise.reject(data);
     });
 
-export const forgotPasswordApi = (data: { email: string }) =>
+export type TForgotPasswordData = {
+  email: string
+}
+
+export const forgotPasswordApi = (data: TForgotPasswordData) =>
   fetch(`${URL}/password-reset`, {
     method: 'POST',
     headers: {
@@ -190,7 +194,12 @@ export const forgotPasswordApi = (data: { email: string }) =>
       return Promise.reject(data);
     });
 
-export const resetPasswordApi = (data: { password: string; token: string }) =>
+export type TResetPasswordData = { 
+  password: string; 
+  token: string;
+}
+
+export const resetPasswordApi = (data: TResetPasswordData) =>
   fetch(`${URL}/password-reset/reset`, {
     method: 'POST',
     headers: {
