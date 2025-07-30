@@ -6,9 +6,11 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 import { authReduser } from './features/auth/auth';
+import { authUserReduser } from './features/auth-user/auth-user';
 
 const rootReducer = combineSlices({
   auth: authReduser,
+  authUser: authUserReduser
 });
 
 const store = configureStore({
