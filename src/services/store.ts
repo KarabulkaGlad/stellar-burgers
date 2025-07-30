@@ -7,10 +7,12 @@ import {
 } from 'react-redux';
 import { authReduser } from './features/auth/auth';
 import { authUserReduser } from './features/auth-user/auth-user';
+import { feedsReduser } from './features/feeds/feeds';
 
 const rootReducer = combineSlices({
   auth: authReduser,
-  authUser: authUserReduser
+  authUser: authUserReduser,
+  feeds: feedsReduser
 });
 
 const store = configureStore({

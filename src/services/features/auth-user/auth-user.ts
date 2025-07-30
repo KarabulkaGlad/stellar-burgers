@@ -71,7 +71,7 @@ const authUserSlice = createSlice({
         .addCase(loginUser.fulfilled, (state, action) => {
                 state.user = action.payload.user;
         })
-        .addCase(logoutUser.fulfilled, (state) => initialState);
+        .addCase(logoutUser.fulfilled, () => initialState);
     },
     selectors: {
         selectUser: (store) => store.user,
