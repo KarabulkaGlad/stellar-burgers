@@ -1,4 +1,4 @@
-import { forgotPasswordApi, loginUserApi, logoutApi, registerUserApi, resetPasswordApi, TForgotPasswordData, TLoginData, TRegisterData, TResetPasswordData } from "@api";
+import { forgotPasswordApi, loginUserApi, logoutApi, registerUserApi, resetPasswordApi, TForgotPasswordData, TLoginData, TRegisterData, TResetPasswordData, TServerResponse } from "@api";
 import { asyncThunkCreator, buildCreateSlice, SerializedError } from "@reduxjs/toolkit";
 
 const createSlice = buildCreateSlice({
@@ -103,7 +103,7 @@ const authSlice = createSlice({
             }
         }),
 
-        logout: create.asyncThunk(async () => logoutApi(),
+        logout: create.asyncThunk<void, TServerResponse<{}>>(async () => logoutApi(),
         {
             pending: (state) => {
                 state.errors.logoutError = undefined;
@@ -113,7 +113,8 @@ const authSlice = createSlice({
                 state.errors.logoutError = action.error;
                 state.statuses.isLogoutPending = false;
             },
-            fulfilled: (state) => {
+            fulfilled: (state, action) => {
+                state.isAuthenticated = !action.payload.success;
                 state.statuses.isLoginPending = false;
             }
         }),
@@ -127,4 +128,4 @@ const authSlice = createSlice({
 
 export const {login: loginUser, register: registerUser, logout: logoutUser, forgotPassword, resetPassword} = authSlice.actions;
 export const {selectIsAuthenticated, selectErrors: selectErrorsAuth, selectStatuses: selectStatusesAuth} = authSlice.selectors;
-export const authReduser = authSlice.reducer;
+export const authReducer = authSlice.reducer;

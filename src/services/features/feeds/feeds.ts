@@ -31,7 +31,7 @@ const feedsSlice = createSlice({
     name: 'feeds',
     initialState,
     reducers: (create) => ({
-        getFeeds: create.asyncThunk(async () => getFeedsApi(),
+        getFeeds: create.asyncThunk<void, TFeedsResponse>(async () => getFeedsApi(),
         {
             pending: (state) => {
                 state.errors.getFeedsError = undefined;
@@ -60,5 +60,5 @@ const feedsSlice = createSlice({
 
 export const { getFeeds } = feedsSlice.actions;
 export const { selectFeeds, selectErrors: selectErrorsFeeds, selectStatuses: selectStatusesFeeds} = feedsSlice.selectors;
-export const feedsReduser = feedsSlice.reducer;
+export const feedsReducer = feedsSlice.reducer;
 

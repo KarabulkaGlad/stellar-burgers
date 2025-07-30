@@ -2,11 +2,15 @@ import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { useDispatch } from '../../services/store';
 import { useSelector } from '../../services/store';
-import { registerUser, selectErrorsAuth } from '../../services/features/auth/auth';
+import { registerUser, selectErrorsAuth, selectIsAuthenticated } from '../../services/features/auth/auth';
+import { useNavigate } from 'react-router-dom';
 
 export const Register: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {registerError} = useSelector(selectErrorsAuth);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +19,12 @@ export const Register: FC = () => {
   useEffect(() => {
     setServerError(registerError?.message);
   }, [registerError])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile'); 
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

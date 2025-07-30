@@ -1,4 +1,4 @@
-import { ConstructorPage, Feed, ForgotPassword, Login, NotFound404, Profile, ProfileOrders, Register } from '@pages';
+import { ConstructorPage, Feed, ForgotPassword, Login, NotFound404, Profile, ProfileOrders, Register, ResetPassword } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 
@@ -21,6 +21,7 @@ const App = () => {
           <Route path='login' element={<Login/>}/> 
           <Route path='register' element={<Register/>}/>
           <Route path='forgot-password' element={<ForgotPassword/>}/>
+          <Route path='reset-password' element={<ResetPassword/>}/>
           <Route element={<ProtectedRouteAuth />}>
             <Route path='profile'>
               <Route index element={<Profile/>} /> 

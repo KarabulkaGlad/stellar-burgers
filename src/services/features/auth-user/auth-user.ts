@@ -86,21 +86,6 @@ const authUserSlice = createSlice({
                 state.statuses.isGetOrdersPending = false;
             }
         }),
-        createOrder: create.asyncThunk(async (data: string[]) => orderBurgerApi(data),
-        {
-            pending: (state) => {
-                state.errors.getOrdersError = undefined;
-                state.statuses.isCreateOrderPending = true;
-            },
-            rejected: (state, action) => {
-                state.errors.getOrdersError = action.error;
-                state.statuses.isCreateOrderPending = false;
-            },
-            fulfilled: (state, action) => {
-                state.orders.push(action.payload.order);
-                state.statuses.isCreateOrderPending = false;
-            }
-        }),
     }),
     extraReducers: (builder) => {
         builder.addCase(registerUser.fulfilled, (state, action) => {
@@ -122,11 +107,10 @@ const authUserSlice = createSlice({
 export const { 
     getUser: getAuthUser,
     updateUser: updateAuthUser, 
-    getOrders: getOrdersAuthUser, 
-    createOrder } = authUserSlice.actions;
+    getOrders: getOrdersAuthUser} = authUserSlice.actions;
 export const { 
     selectUser: selectAuthUser, 
     selectOrders: selectOrdersAuthUser, 
     selectErrors: selectErrorsAuth, 
     selectStatuses: selectStatusesAuth} = authUserSlice.selectors;
-export const authUserReduser = authUserSlice.reducer;
+export const authUserReducer = authUserSlice.reducer;

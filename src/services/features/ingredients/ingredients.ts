@@ -59,5 +59,5 @@ const ingredientsSlice = createSlice({
 
 export const { getIngredients } = ingredientsSlice.actions;
 export const { selectIngredients, selectErrors: selectErrorsIngredients, selectStatuses: selectStatusesIngredients} = ingredientsSlice.selectors;
-export const ingredientsReduser = ingredientsSlice.reducer;
+export const ingredientsReducer = ingredientsSlice.reducer;
 

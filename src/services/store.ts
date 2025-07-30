@@ -5,16 +5,18 @@ import {
   useDispatch as dispatchHook,
   useSelector as selectorHook
 } from 'react-redux';
-import { authReduser } from './features/auth/auth';
-import { authUserReduser } from './features/auth-user/auth-user';
-import { feedsReduser } from './features/feeds/feeds';
-import { ingredientsReduser } from './features/ingredients/ingredients';
+import { authReducer } from './features/auth/auth';
+import { authUserReducer } from './features/auth-user/auth-user';
+import { feedsReducer } from './features/feeds/feeds';
+import { ingredientsReducer } from './features/ingredients/ingredients';
+import { userOrderReducer } from './features/user-order/user-order';
 
 const rootReducer = combineSlices({
-  auth: authReduser,
-  authUser: authUserReduser,
-  feeds: feedsReduser,
-  ingredients: ingredientsReduser,
+  auth: authReducer,
+  authUser: authUserReducer,
+  feeds: feedsReducer,
+  ingredients: ingredientsReducer,
+  userOrder: userOrderReducer,
 });
 
 const store = configureStore({

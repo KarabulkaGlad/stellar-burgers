@@ -6,7 +6,7 @@ const URL = process.env.BURGER_API_URL;
 const checkResponse = <T>(res: Response): Promise<T> =>
   res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 
-type TServerResponse<T> = {
+export type TServerResponse<T> = {
   success: boolean;
 } & T;
 
@@ -104,7 +104,11 @@ type TNewOrderResponse = TServerResponse<{
   name: string;
 }>;
 
-export const orderBurgerApi = (data: string[]) =>
+export type TOrderBurgerRequest = {
+  ingredients: string[];
+}
+
+export const orderBurgerApi = (data: TOrderBurgerRequest) =>
   fetchWithRefresh<TNewOrderResponse>(`${URL}/orders`, {
     method: 'POST',
     headers: {
@@ -112,7 +116,7 @@ export const orderBurgerApi = (data: string[]) =>
       authorization: getCookie('accessToken')
     } as HeadersInit,
     body: JSON.stringify({
-      ingredients: data
+      ingredients: data.ingredients
     })
   }).then((data) => {
     if (data?.success) return data;
