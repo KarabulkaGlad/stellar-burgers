@@ -8,11 +8,14 @@ import {
 import { authReduser } from './features/auth/auth';
 import { authUserReduser } from './features/auth-user/auth-user';
 import { feedsReduser } from './features/feeds/feeds';
+import { ingredientsReduser } from './features/ingredients/ingredients';
 
 const rootReducer = combineSlices({
   auth: authReduser,
   authUser: authUserReduser,
-  feeds: feedsReduser
+  feeds: feedsReduser,
+  ingredients: ingredientsReduser,
+  
 });
 
 const store = configureStore({
