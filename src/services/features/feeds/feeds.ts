@@ -9,7 +9,7 @@ const createSlice = buildCreateSlice({
 
 export type TFeeds = Omit<TFeedsResponse, 'success'>;
 
-type TAuthUserSlice = {
+type TFeedsUserSlice = {
     feeds: TFeeds;
     errors: {
         getFeedsError?: SerializedError;
@@ -19,7 +19,7 @@ type TAuthUserSlice = {
     };
 }
 
-const initialState: TAuthUserSlice = {
+const initialState: TFeedsUserSlice = {
     feeds: EMPTY_FEEDS,
     errors: {},
     statuses: {

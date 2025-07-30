@@ -15,7 +15,7 @@ const rootReducer = combineSlices({
   authUser: authUserReduser,
   feeds: feedsReduser,
   ingredients: ingredientsReduser,
-  
+  orders: ingredientsReduser,
 });
 
 const store = configureStore({

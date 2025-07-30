@@ -1,5 +1,4 @@
 import { asyncThunkCreator, buildCreateSlice, SerializedError } from "@reduxjs/toolkit";
-import { EMPTY_FEEDS } from "src/constants/constants";
 import { logoutUser } from "../auth/auth";
 import { getIngredientsApi } from "@api";
 import { TIngredient } from "@utils-types";
@@ -9,7 +8,7 @@ const createSlice = buildCreateSlice({
 });
 
 
-type TAuthUserSlice = {
+type TIngredientsSlice = {
     ingredients: TIngredient[]
     errors: {
         getIngredientsError?: SerializedError;
@@ -19,7 +18,7 @@ type TAuthUserSlice = {
     };
 }
 
-const initialState: TAuthUserSlice = {
+const initialState: TIngredientsSlice = {
     ingredients: [],
     errors: {},
     statuses: {

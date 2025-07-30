@@ -11,3 +11,4 @@ export const EMPTY_FEEDS: TFeeds = {
     total: 0,
     totalToday: 0,
 }
+
