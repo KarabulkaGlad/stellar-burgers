@@ -1,6 +1,6 @@
 import { getFeedsApi, TFeedsResponse } from "@api";
 import { asyncThunkCreator, buildCreateSlice, SerializedError } from "@reduxjs/toolkit";
-import { EMPTY_FEEDS } from "src/constants/constants";
+import { EMPTY_FEEDS } from "../../../constants/constants";
 import { logoutUser } from "../auth/auth";
 
 const createSlice = buildCreateSlice({

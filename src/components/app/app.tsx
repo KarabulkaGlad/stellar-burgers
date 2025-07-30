@@ -7,6 +7,7 @@ import { MainLayout } from '../../layout/main-layout';
 import { Modal } from '../modal';
 import { OrderInfo } from '../order-info';
 import { IngredientDetails } from '../ingredient-details';
+import { ProtectedRouteAuth } from '../protected-route-auth/protected-route-auth';
 
 const App = () => {
   const location = useLocation();
@@ -17,15 +18,15 @@ const App = () => {
         <Route path='/' element={<MainLayout />}>
           <Route index element={<ConstructorPage />} />
           <Route path='feed' element={<Feed/>} />
-          <Route path='login' element={<Login/>}/>
+          <Route path='login' element={<Login/>}/> 
           <Route path='register' element={<Register/>}/>
           <Route path='forgot-password' element={<ForgotPassword/>}/>
-          <Route path='profile'>
-            <Route index element={<Profile/>} />
-            <Route path='orders' element={<ProfileOrders/>} />
+          <Route element={<ProtectedRouteAuth />}>
+            <Route path='profile'>
+              <Route index element={<Profile/>} /> 
+              <Route path='orders' element={<ProfileOrders/>} /> 
+            </Route>
           </Route>
-          <Route path='feed/:number' element={<OrderInfo/>}/>
-          <Route path='ingredients/:id' element={<IngredientDetails/>}/>
         </Route>
         <Route path='*' element={<NotFound404/>}/>
       </Routes>
@@ -33,7 +34,9 @@ const App = () => {
       <Routes>
         <Route path='/feed/:number' element={<OrderInfo/>}/>
         <Route path='/ingredients/:id' element={<IngredientDetails/>}/>
-        <Route path='/profile/orders/:number' element={<OrderInfo/>}/>
+        <Route element={<ProtectedRouteAuth />}>
+          <Route path='/profile/orders/:number' element={<OrderInfo/>}/>
+        </Route>
       </Routes>
       }
       

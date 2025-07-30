@@ -30,7 +30,7 @@ const ingredientsSlice = createSlice({
     name: 'ingredients',
     initialState,
     reducers: (create) => ({
-        getIngredients: create.asyncThunk(async () => getIngredientsApi(),
+        getIngredients: create.asyncThunk<void, TIngredient[]>(async () => getIngredientsApi(),
         {
             pending: (state) => {
                 state.errors.getIngredientsError = undefined;

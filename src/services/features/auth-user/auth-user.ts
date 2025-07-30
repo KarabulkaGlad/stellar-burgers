@@ -1,7 +1,7 @@
-import { getUserApi, TRegisterData, updateUserApi } from "@api";
+import { getOrdersApi, getUserApi, orderBurgerApi, TRegisterData, updateUserApi } from "@api";
 import { asyncThunkCreator, buildCreateSlice, SerializedError } from "@reduxjs/toolkit";
-import { TUser } from "@utils-types";
-import { EMPTY_USER } from "src/constants/constants";
+import { TOrder, TUser } from "@utils-types";
+import { EMPTY_USER } from "../../../constants/constants";
 import { loginUser, logoutUser, registerUser } from "../auth/auth";
 
 const createSlice = buildCreateSlice({
@@ -10,22 +10,30 @@ const createSlice = buildCreateSlice({
 
 type TAuthUserSlice = {
     user: TUser;
+    orders: TOrder[];
     errors: {
         getUserError?: SerializedError;
         updateUserError?: SerializedError;
+        getOrdersError?: SerializedError;
+        createOrderError?: SerializedError;
     };
     statuses: {
         isGetUserPending: boolean;
         isUpdateUserPending: boolean;
+        isGetOrdersPending: boolean;
+        isCreateOrderPending: boolean;
     };
 }
 
 const initialState: TAuthUserSlice = {
     user: EMPTY_USER,
+    orders: [],
     errors: {},
     statuses: {
         isGetUserPending: false,
-        isUpdateUserPending: false
+        isUpdateUserPending: false,
+        isGetOrdersPending: false,
+        isCreateOrderPending: false,
     }
 }
 
@@ -62,7 +70,37 @@ const authUserSlice = createSlice({
                 state.user = action.payload.user;
                 state.statuses.isUpdateUserPending = false;
             }
-        })
+        }),
+        getOrders: create.asyncThunk(async () => getOrdersApi(),
+        {
+            pending: (state) => {
+                state.errors.getOrdersError = undefined;
+                state.statuses.isGetOrdersPending = true;
+            },
+            rejected: (state, action) => {
+                state.errors.getOrdersError = action.error;
+                state.statuses.isGetOrdersPending = false;
+            },
+            fulfilled: (state, action) => {
+                state.orders = action.payload;
+                state.statuses.isGetOrdersPending = false;
+            }
+        }),
+        createOrder: create.asyncThunk(async (data: string[]) => orderBurgerApi(data),
+        {
+            pending: (state) => {
+                state.errors.getOrdersError = undefined;
+                state.statuses.isCreateOrderPending = true;
+            },
+            rejected: (state, action) => {
+                state.errors.getOrdersError = action.error;
+                state.statuses.isCreateOrderPending = false;
+            },
+            fulfilled: (state, action) => {
+                state.orders.push(action.payload.order);
+                state.statuses.isCreateOrderPending = false;
+            }
+        }),
     }),
     extraReducers: (builder) => {
         builder.addCase(registerUser.fulfilled, (state, action) => {
@@ -75,11 +113,20 @@ const authUserSlice = createSlice({
     },
     selectors: {
         selectUser: (store) => store.user,
+        selectOrders: (store) => store.orders,
         selectErrors: (store) => store.errors,
         selectStatuses: (store) => store.statuses,
     }
 });
 
-export const { getUser: getAuthUser, updateUser: updateAuthUser } = authUserSlice.actions;
-export const { selectUser: selectAuthUser, selectErrors: selectErrorsAuth, selectStatuses: selectStatusesAuth} = authUserSlice.selectors;
+export const { 
+    getUser: getAuthUser,
+    updateUser: updateAuthUser, 
+    getOrders: getOrdersAuthUser, 
+    createOrder } = authUserSlice.actions;
+export const { 
+    selectUser: selectAuthUser, 
+    selectOrders: selectOrdersAuthUser, 
+    selectErrors: selectErrorsAuth, 
+    selectStatuses: selectStatusesAuth} = authUserSlice.selectors;
 export const authUserReduser = authUserSlice.reducer;

@@ -1,3 +1,4 @@
+import { TRegisterData } from "@api";
 import { TUser } from "@utils-types";
 import { TFeeds } from "src/services/features/feeds/feeds";
 
@@ -11,4 +12,5 @@ export const EMPTY_FEEDS: TFeeds = {
     total: 0,
     totalToday: 0,
 }
+
 
