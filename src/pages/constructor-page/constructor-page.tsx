@@ -5,16 +5,11 @@ import styles from './constructor-page.module.css';
 import { BurgerIngredients } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
-import { FC, useEffect } from 'react';
-import { getIngredients, selectStatusesIngredients } from '../../services/features/ingredients/ingredients';
+import { FC } from 'react';
+import { selectStatusesIngredients } from '../../services/features/ingredients/ingredients';
 
 export const ConstructorPage: FC = () => {
-  const dispatch = useDispatch();
-  const {isGetIngredientsPending} = useSelector(selectStatusesIngredients);
-  
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
+  const { isGetIngredientsPending } = useSelector(selectStatusesIngredients);
 
   return (
     <>

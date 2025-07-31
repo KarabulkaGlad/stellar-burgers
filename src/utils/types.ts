@@ -37,9 +37,9 @@ export type TUser = {
   name: string;
 };
 
-export type OrderBurder = {
-    bun: TIngredient;
-    ingredients: TIngredient[];
-}
+export type OrderBurger = {
+  bun?: TConstructorIngredient;
+  ingredients: TConstructorIngredient[];
+};
 
 export type TTabMode = 'bun' | 'sauce' | 'main';

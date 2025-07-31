@@ -2,7 +2,10 @@ import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch } from '../../services/store';
 import { useSelector } from '../../services/store';
-import { selectAuthUser, updateAuthUser } from '../../services/features/auth-user/auth-user';
+import {
+  selectAuthUser,
+  updateAuthUser
+} from '../../services/features/auth-user/auth-user';
 
 export const Profile: FC = () => {
   const dispatch = useDispatch();

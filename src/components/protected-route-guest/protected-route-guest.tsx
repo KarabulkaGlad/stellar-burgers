@@ -1,11 +1,13 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../services/features/auth/auth';
-import { useSelector } from '../../services/store';
 
-export const ProtectedRouteAuth = () => {
+export const ProtectedRouteGuest = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  if (!isAuthenticated) {
-    return <Navigate to='/login' replace />;
+
+  if (isAuthenticated) {
+    return <Navigate to='/' replace />;
   }
+
   return <Outlet />;
 };

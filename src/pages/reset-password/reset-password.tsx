@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { ResetPasswordUI } from '@ui-pages';
 import { useDispatch } from '../../services/store';
 import { useSelector } from '../../services/store';
-import { resetPassword, selectErrorsAuth } from '../../services/features/auth/auth';
+import {
+  resetPassword,
+  selectErrorsAuth
+} from '../../services/features/auth/auth';
 
 export const ResetPassword: FC = () => {
   const dispatch = useDispatch();
-  const {resetPasswordError} = useSelector(selectErrorsAuth);
+  const { resetPasswordError } = useSelector(selectErrorsAuth);
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
@@ -22,11 +25,13 @@ export const ResetPassword: FC = () => {
     e.preventDefault();
     setError(undefined);
 
-    dispatch(resetPassword({token, password}))
-      .then(() => {
-        localStorage.removeItem('resetPassword');
-        navigate('/login');
-      })
+    dispatch(resetPassword({ token, password })).then((action) => {
+      if (resetPassword.rejected.match(action)) {
+        return;
+      }
+      localStorage.removeItem('resetPassword');
+      navigate('/login');
+    });
   };
 
   useEffect(() => {

@@ -8,9 +8,8 @@ import { useSelector } from '../../services/store';
 import { selectIngredients } from '../../services/features/ingredients/ingredients';
 
 export const BurgerIngredients: FC = () => {
-
-  const ingredients = useSelector(selectIngredients)
-  const buns = filterIngredientsByType(ingredients, 'bun'); // не уверен что правильно
+  const ingredients = useSelector(selectIngredients);
+  const buns = filterIngredientsByType(ingredients, 'bun');
   const mains = filterIngredientsByType(ingredients, 'main');
   const sauces = filterIngredientsByType(ingredients, 'sauce');
 

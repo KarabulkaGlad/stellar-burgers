@@ -4,7 +4,6 @@ import { ProfileMenuUI } from '@ui';
 import { useDispatch } from '../../services/store';
 import { logoutUser } from '../../services/features/auth/auth';
 
-
 export const ProfileMenu: FC = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();

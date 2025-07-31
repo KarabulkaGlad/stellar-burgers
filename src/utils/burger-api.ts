@@ -106,7 +106,7 @@ type TNewOrderResponse = TServerResponse<{
 
 export type TOrderBurgerRequest = {
   ingredients: string[];
-}
+};
 
 export const orderBurgerApi = (data: TOrderBurgerRequest) =>
   fetchWithRefresh<TNewOrderResponse>(`${URL}/orders`, {
@@ -189,8 +189,8 @@ export const loginUserApi = (data: TLoginData) =>
     });
 
 export type TForgotPasswordData = {
-  email: string
-}
+  email: string;
+};
 
 export const forgotPasswordApi = (data: TForgotPasswordData) =>
   fetch(`${URL}/password-reset`, {
@@ -206,10 +206,10 @@ export const forgotPasswordApi = (data: TForgotPasswordData) =>
       return Promise.reject(data);
     });
 
-export type TResetPasswordData = { 
-  password: string; 
+export type TResetPasswordData = {
+  password: string;
   token: string;
-}
+};
 
 export const resetPasswordApi = (data: TResetPasswordData) =>
   fetch(`${URL}/password-reset/reset`, {
@@ -244,8 +244,7 @@ export const updateUserApi = (user: Partial<TRegisterData>) => {
     } as HeadersInit,
     body: JSON.stringify(user)
   });
-}
-  
+};
 
 export const logoutApi = () =>
   fetch(`${URL}/auth/logout`, {

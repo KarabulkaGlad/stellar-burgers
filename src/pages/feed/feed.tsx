@@ -8,19 +8,14 @@ import { useDispatch, useSelector } from '../../services/store';
 export const Feed: FC = () => {
   const dispatch = useDispatch();
   const feeds = useSelector(selectFeeds);
-  useEffect(() => {
-    handleGetFeeds();
-  }, []);
 
   const handleGetFeeds = useCallback(() => {
     dispatch(getFeeds());
-  }, [dispatch])
+  }, [dispatch]);
 
   if (!feeds.orders.length) {
     return <Preloader />;
   }
 
-  return (
-    <FeedUI orders={feeds.orders} handleGetFeeds={handleGetFeeds} />
-  );
+  return <FeedUI orders={feeds.orders} handleGetFeeds={handleGetFeeds} />;
 };

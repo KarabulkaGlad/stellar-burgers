@@ -16,7 +16,10 @@ export const FeedInfo: FC = () => {
 
   const readyOrders = useMemo(() => getOrders(feeds.orders, 'done'), [feeds]);
 
-  const pendingOrders = useMemo(() => getOrders(feeds.orders, 'pending'), [feeds]);
+  const pendingOrders = useMemo(
+    () => getOrders(feeds.orders, 'pending'),
+    [feeds]
+  );
 
   return (
     <FeedInfoUI
