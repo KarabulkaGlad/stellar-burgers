@@ -24,12 +24,6 @@ export const Register: FC = () => {
     setServerError(registerError?.message);
   }, [registerError]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/profile');
-    }
-  }, [isAuthenticated, navigate]);
-
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(registerUser({ name, email, password }));

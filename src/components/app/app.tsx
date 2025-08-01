@@ -18,20 +18,26 @@ import { Modal } from '../modal';
 import { OrderInfo } from '../order-info';
 import { IngredientDetails } from '../ingredient-details';
 import { ProtectedRouteAuth } from '../protected-route-auth/protected-route-auth';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import { getIngredients } from '../../services/features/ingredients/ingredients';
 import { ModalWrapper } from '../modal-wrapper/ModalWrapper ';
 import { getFeeds } from '../../services/features/feeds/feeds';
 import { ItemInfoLayout } from '../../layout/item-info-layout/item-info-layout';
 import { ProtectedRouteGuest } from '../protected-route-guest';
+import { getAuthUser } from '../../services/features/auth-user/auth-user';
+import { selectIsAuthChecked } from '../../services/features/auth/auth';
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const isAuthChecked = useSelector(selectIsAuthChecked);
   const backgroundLocation = location.state?.background;
 
   useEffect(() => {
+    if (!isAuthChecked) {
+      dispatch(getAuthUser());
+    }
     dispatch(getIngredients());
     dispatch(getFeeds());
   }, [dispatch]);

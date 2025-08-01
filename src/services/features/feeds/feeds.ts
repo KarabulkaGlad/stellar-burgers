@@ -5,7 +5,6 @@ import {
   SerializedError
 } from '@reduxjs/toolkit';
 import { EMPTY_FEEDS } from '../../../constants/constants';
-import { logoutUser } from '../auth/auth';
 import { createOrder } from '../user-order/user-order';
 
 const createSlice = buildCreateSlice({
@@ -36,24 +35,21 @@ const feedsSlice = createSlice({
   name: 'feeds',
   initialState,
   reducers: (create) => ({
-    getFeeds: create.asyncThunk<void, TFeedsResponse>(
-      async () => getFeedsApi(),
-      {
-        pending: (state) => {
-          state.errors.getFeedsError = undefined;
-          state.statuses.isGetFeedsPending = true;
-        },
-        rejected: (state, action) => {
-          state.errors.getFeedsError = action.error;
-          state.statuses.isGetFeedsPending = false;
-        },
-        fulfilled: (state, action) => {
-          state.feeds = action.payload;
-          state.statuses.isGetFeedsPending = false;
-        }
+    getFeeds: create.asyncThunk<void, TFeedsResponse>(getFeedsApi, {
+      pending: (state) => {
+        state.errors.getFeedsError = undefined;
+        state.statuses.isGetFeedsPending = true;
+      },
+      rejected: (state, action) => {
+        state.errors.getFeedsError = action.error;
+        state.statuses.isGetFeedsPending = false;
+      },
+      fulfilled: (state, action) => {
+        state.feeds = action.payload;
+        state.statuses.isGetFeedsPending = false;
       }
-    )
-  }), // потом по необходимости добавлю ещё redusers
+    })
+  }),
   extraReducers: (builder) => {
     builder.addCase(createOrder.fulfilled, (state, action) => {
       state.feeds.orders.unshift(action.payload.order);

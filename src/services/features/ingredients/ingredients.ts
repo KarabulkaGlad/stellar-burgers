@@ -4,7 +4,6 @@ import {
   PayloadAction,
   SerializedError
 } from '@reduxjs/toolkit';
-import { logoutUser } from '../auth/auth';
 import { getIngredientsApi } from '@api';
 import { TIngredient } from '@utils-types';
 import { RootState } from '../../store';
@@ -35,23 +34,20 @@ const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: (create) => ({
-    getIngredients: create.asyncThunk<void, TIngredient[]>(
-      async () => getIngredientsApi(),
-      {
-        pending: (state) => {
-          state.errors.getIngredientsError = undefined;
-          state.statuses.isGetIngredientsPending = true;
-        },
-        rejected: (state, action) => {
-          state.errors.getIngredientsError = action.error;
-          state.statuses.isGetIngredientsPending = false;
-        },
-        fulfilled: (state, action) => {
-          state.ingredients = action.payload;
-          state.statuses.isGetIngredientsPending = false;
-        }
+    getIngredients: create.asyncThunk<void, TIngredient[]>(getIngredientsApi, {
+      pending: (state) => {
+        state.errors.getIngredientsError = undefined;
+        state.statuses.isGetIngredientsPending = true;
+      },
+      rejected: (state, action) => {
+        state.errors.getIngredientsError = action.error;
+        state.statuses.isGetIngredientsPending = false;
+      },
+      fulfilled: (state, action) => {
+        state.ingredients = action.payload;
+        state.statuses.isGetIngredientsPending = false;
       }
-    )
+    })
   }),
   selectors: {
     selectIngredients: (store) => store.ingredients,

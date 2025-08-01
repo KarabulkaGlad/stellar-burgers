@@ -3,6 +3,7 @@ import {
   getUserApi,
   orderBurgerApi,
   TRegisterData,
+  TUserResponse,
   updateUserApi
 } from '@api';
 import {
@@ -54,7 +55,7 @@ const authUserSlice = createSlice({
   name: 'authUser',
   initialState,
   reducers: (create) => ({
-    getUser: create.asyncThunk(async () => getUserApi(), {
+    getUser: create.asyncThunk<void, TUserResponse>(getUserApi, {
       pending: (state) => {
         state.errors.getUserError = undefined;
         state.statuses.isGetUserPending = true;
@@ -85,7 +86,7 @@ const authUserSlice = createSlice({
         }
       }
     ),
-    getOrders: create.asyncThunk<void, TOrder[]>(async () => getOrdersApi(), {
+    getOrders: create.asyncThunk<void, TOrder[]>(getOrdersApi, {
       pending: (state) => {
         state.errors.getOrdersError = undefined;
         state.statuses.isGetOrdersPending = true;

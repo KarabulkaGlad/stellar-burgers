@@ -15,6 +15,7 @@ import {
   buildCreateSlice,
   SerializedError
 } from '@reduxjs/toolkit';
+import { getAuthUser } from '../auth-user/auth-user';
 
 const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator }
@@ -22,6 +23,7 @@ const createSlice = buildCreateSlice({
 
 type TAuthSlice = {
   isAuthenticated: boolean;
+  isAuthChecked: boolean;
   errors: {
     loginError?: SerializedError;
     logoutError?: SerializedError;
@@ -40,6 +42,7 @@ type TAuthSlice = {
 
 const initialState: TAuthSlice = {
   isAuthenticated: false,
+  isAuthChecked: false,
   errors: {},
   statuses: {
     isLoginPending: false,
@@ -58,6 +61,7 @@ const authSlice = createSlice({
       pending: (state) => {
         state.errors.loginError = undefined;
         state.statuses.isLoginPending = true;
+        state.isAuthChecked = true;
       },
       rejected: (state, action) => {
         state.errors.loginError = action.error;
@@ -76,6 +80,7 @@ const authSlice = createSlice({
         pending: (state) => {
           state.errors.registerError = undefined;
           state.statuses.isRegisterPending = true;
+          state.isAuthChecked = true;
         },
         rejected: (state, action) => {
           state.errors.registerError = action.error;
@@ -123,25 +128,32 @@ const authSlice = createSlice({
       }
     ),
 
-    logout: create.asyncThunk<void, TServerResponse<{}>>(
-      async () => logoutApi(),
-      {
-        pending: (state) => {
-          state.errors.logoutError = undefined;
-          state.statuses.isLogoutPending = true;
-        },
-        rejected: (state, action) => {
-          state.errors.logoutError = action.error;
-          state.statuses.isLogoutPending = false;
-        },
-        fulfilled: (state, action) => {
-          state.isAuthenticated = !action.payload.success;
-          state.statuses.isLoginPending = false;
-        }
+    logout: create.asyncThunk<void, TServerResponse<{}>>(logoutApi, {
+      pending: (state) => {
+        state.errors.logoutError = undefined;
+        state.statuses.isLogoutPending = true;
+      },
+      rejected: (state, action) => {
+        state.errors.logoutError = action.error;
+        state.statuses.isLogoutPending = false;
+      },
+      fulfilled: (state, action) => {
+        state.isAuthenticated = !action.payload.success;
+        state.statuses.isLoginPending = false;
       }
-    )
+    })
   }),
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAuthUser.pending, (state) => {
+        state.isAuthChecked = true;
+      })
+      .addCase(getAuthUser.fulfilled, (state) => {
+        state.isAuthenticated = true;
+      });
+  },
   selectors: {
+    selectIsAuthChecked: (store) => store.isAuthChecked,
     selectIsAuthenticated: (store) => store.isAuthenticated,
     selectErrors: (store) => store.errors,
     selectStatuses: (store) => store.statuses
@@ -157,6 +169,7 @@ export const {
 } = authSlice.actions;
 export const {
   selectIsAuthenticated,
+  selectIsAuthChecked,
   selectErrors: selectErrorsAuth,
   selectStatuses: selectStatusesAuth
 } = authSlice.selectors;
