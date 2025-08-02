@@ -1,4 +1,14 @@
-import { ConstructorPage, Feed, ForgotPassword, Login, NotFound404, Profile, ProfileOrders, Register } from '@pages';
+import {
+  ConstructorPage,
+  Feed,
+  ForgotPassword,
+  Login,
+  NotFound404,
+  Profile,
+  ProfileOrders,
+  Register,
+  ResetPassword
+} from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 
@@ -7,38 +17,95 @@ import { MainLayout } from '../../layout/main-layout';
 import { Modal } from '../modal';
 import { OrderInfo } from '../order-info';
 import { IngredientDetails } from '../ingredient-details';
+import { ProtectedRouteAuth } from '../protected-route-auth/protected-route-auth';
+import { useDispatch, useSelector } from '../../services/store';
+import { useEffect } from 'react';
+import { getIngredients } from '../../services/features/ingredients/ingredients';
+import { ModalWrapper } from '../modal-wrapper/ModalWrapper ';
+import { getFeeds } from '../../services/features/feeds/feeds';
+import { ItemInfoLayout } from '../../layout/item-info-layout/item-info-layout';
+import { ProtectedRouteGuest } from '../protected-route-guest';
+import { getAuthUser } from '../../services/features/auth-user/auth-user';
+import { selectIsAuthChecked } from '../../services/features/auth/auth';
 
 const App = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
-  const backgroundLocation = location.state?.backgroundLocation;
+  const isAuthChecked = useSelector(selectIsAuthChecked);
+  const backgroundLocation = location.state?.background;
+
+  useEffect(() => {
+    if (!isAuthChecked) {
+      dispatch(getAuthUser());
+    }
+    dispatch(getIngredients());
+    dispatch(getFeeds());
+  }, [dispatch]);
+
   return (
     <div className={styles.app}>
       <Routes location={backgroundLocation || location}>
         <Route path='/' element={<MainLayout />}>
           <Route index element={<ConstructorPage />} />
-          <Route path='feed' element={<Feed/>} />
-          <Route path='login' element={<Login/>}/>
-          <Route path='register' element={<Register/>}/>
-          <Route path='forgot-password' element={<ForgotPassword/>}/>
-          <Route path='profile'>
-            <Route index element={<Profile/>} />
-            <Route path='orders' element={<ProfileOrders/>} />
+          <Route path='feed' element={<Feed />} />
+          <Route element={<ProtectedRouteGuest />}>
+            <Route path='login' element={<Login />} />
+            <Route path='register' element={<Register />} />
+            <Route path='forgot-password' element={<ForgotPassword />} />
+            <Route path='reset-password' element={<ResetPassword />} />
           </Route>
-          <Route path='feed/:number' element={<OrderInfo/>}/>
-          <Route path='ingredients/:id' element={<IngredientDetails/>}/>
+          <Route element={<ProtectedRouteAuth />}>
+            <Route path='profile'>
+              <Route index element={<Profile />} />
+              <Route path='orders' element={<ProfileOrders />} />
+            </Route>
+          </Route>
         </Route>
-        <Route path='*' element={<NotFound404/>}/>
+
+        <Route element={<ItemInfoLayout />}>
+          <Route element={<ProtectedRouteAuth />}>
+            <Route path='/profile/orders/:number' element={<OrderInfo />} />
+          </Route>
+          <Route path='/ingredients/:id' element={<IngredientDetails />} />
+          <Route path='/feed/:number' element={<OrderInfo />} />
+        </Route>
+        <Route path='*' element={<NotFound404 />} />
       </Routes>
-      { backgroundLocation && 
-      <Routes>
-        <Route path='/feed/:number' element={<OrderInfo/>}/>
-        <Route path='/ingredients/:id' element={<IngredientDetails/>}/>
-        <Route path='/profile/orders/:number' element={<OrderInfo/>}/>
-      </Routes>
-      }
-      
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='/ingredients/:id'
+            element={
+              <ModalWrapper title='Детали ингредиента'>
+                {' '}
+                <IngredientDetails />{' '}
+              </ModalWrapper>
+            }
+          />
+          <Route
+            path='/feed/:number'
+            element={
+              <ModalWrapper title='Детали заказа'>
+                {' '}
+                <OrderInfo />{' '}
+              </ModalWrapper>
+            }
+          />
+          <Route element={<ProtectedRouteAuth />}>
+            <Route
+              path='/profile/orders/:number'
+              element={
+                <ModalWrapper title='Детали заказа'>
+                  {' '}
+                  <OrderInfo />{' '}
+                </ModalWrapper>
+              }
+            />
+          </Route>
+        </Routes>
+      )}
     </div>
   );
-}
+};
 
 export default App;
