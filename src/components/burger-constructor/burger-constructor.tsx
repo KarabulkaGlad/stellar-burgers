@@ -10,7 +10,10 @@ import {
 } from '../../services/features/user-order/user-order';
 import { OrderBurger } from '@utils-types';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { selectIsAuthenticated } from '../../services/features/auth/auth';
+import {
+  selectIsAuthenticated,
+  setPathToReturnAfterAuth
+} from '../../services/features/auth/auth';
 
 const converterOrderToStringArray = (order: OrderBurger): string[] => {
   if (!order.bun) return [];
@@ -33,6 +36,7 @@ export const BurgerConstructor: FC = () => {
 
   const onOrderClick = () => {
     if (!isAuthenticated) {
+      dispatch(setPathToReturnAfterAuth(location.pathname));
       navigate('/login', { state: { from: location } });
       return;
     }

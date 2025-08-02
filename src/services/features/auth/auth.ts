@@ -13,6 +13,7 @@ import {
 import {
   asyncThunkCreator,
   buildCreateSlice,
+  PayloadAction,
   SerializedError
 } from '@reduxjs/toolkit';
 import { getAuthUser } from '../auth-user/auth-user';
@@ -24,6 +25,7 @@ const createSlice = buildCreateSlice({
 type TAuthSlice = {
   isAuthenticated: boolean;
   isAuthChecked: boolean;
+  pathToReturnAfterAuth: string;
   errors: {
     loginError?: SerializedError;
     logoutError?: SerializedError;
@@ -43,6 +45,7 @@ type TAuthSlice = {
 const initialState: TAuthSlice = {
   isAuthenticated: false,
   isAuthChecked: false,
+  pathToReturnAfterAuth: '/',
   errors: {},
   statuses: {
     isLoginPending: false,
@@ -141,7 +144,12 @@ const authSlice = createSlice({
         state.isAuthenticated = !action.payload.success;
         state.statuses.isLoginPending = false;
       }
-    })
+    }),
+    setPathToReturnAfterAuth: create.reducer(
+      (state, action: PayloadAction<string>) => {
+        state.pathToReturnAfterAuth = action.payload;
+      }
+    )
   }),
   extraReducers: (builder) => {
     builder
@@ -156,7 +164,8 @@ const authSlice = createSlice({
     selectIsAuthChecked: (store) => store.isAuthChecked,
     selectIsAuthenticated: (store) => store.isAuthenticated,
     selectErrors: (store) => store.errors,
-    selectStatuses: (store) => store.statuses
+    selectStatuses: (store) => store.statuses,
+    selectPathToReturnAfterAuth: (store) => store.pathToReturnAfterAuth
   }
 });
 
@@ -164,12 +173,14 @@ export const {
   login: loginUser,
   register: registerUser,
   logout: logoutUser,
+  setPathToReturnAfterAuth,
   forgotPassword,
   resetPassword
 } = authSlice.actions;
 export const {
   selectIsAuthenticated,
   selectIsAuthChecked,
+  selectPathToReturnAfterAuth,
   selectErrors: selectErrorsAuth,
   selectStatuses: selectStatusesAuth
 } = authSlice.selectors;

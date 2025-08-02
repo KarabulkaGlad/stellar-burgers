@@ -64,7 +64,7 @@ const App = () => {
 
         <Route element={<ItemInfoLayout />}>
           <Route element={<ProtectedRouteAuth />}>
-            <Route path='orders/:number' element={<OrderInfo />} />
+            <Route path='/profile/orders/:number' element={<OrderInfo />} />
           </Route>
           <Route path='/ingredients/:id' element={<IngredientDetails />} />
           <Route path='/feed/:number' element={<OrderInfo />} />

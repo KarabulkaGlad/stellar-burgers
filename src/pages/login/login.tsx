@@ -1,18 +1,14 @@
-import { FC, FormEvent, SyntheticEvent, useEffect, useState } from 'react';
+import { FC, FormEvent, useEffect, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useDispatch } from '../../services/store';
-import {
-  loginUser,
-  selectErrorsAuth,
-  selectIsAuthenticated
-} from '../../services/features/auth/auth';
+import { loginUser, selectErrorsAuth } from '../../services/features/auth/auth';
 import { useSelector } from '../../services/store';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Login: FC = () => {
   const dispatch = useDispatch();
 
   const { loginError } = useSelector(selectErrorsAuth);
+
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

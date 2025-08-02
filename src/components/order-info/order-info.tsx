@@ -1,17 +1,24 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useLocation, useParams } from 'react-router-dom';
-import { useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { selectIngredients } from '../../services/features/ingredients/ingredients';
-import { selectOrdersAuthUser } from '../../services/features/auth-user/auth-user';
+import {
+  getOrdersAuthUser,
+  selectIsOrdersReceived,
+  selectOrdersAuthUser
+} from '../../services/features/auth-user/auth-user';
 import { selectFeeds } from '../../services/features/feeds/feeds';
+import { selectIsAuthenticated } from '../../services/features/auth/auth';
 
 export const OrderInfo: FC = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const { number } = useParams<{ number: string }>();
-
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isOrdersReceived = useSelector(selectIsOrdersReceived);
   const { orders: feedsOrders } = useSelector(selectFeeds);
   const profileOrders = useSelector(selectOrdersAuthUser);
   const ingredients = useSelector(selectIngredients);
@@ -23,6 +30,16 @@ export const OrderInfo: FC = () => {
   const orderData = sourceOrders.find(
     (order) => order.number === Number(number)
   );
+
+  useEffect(() => {
+    if (
+      isAuthenticated &&
+      !isOrdersReceived &&
+      location.pathname.startsWith('/profile')
+    ) {
+      dispatch(getOrdersAuthUser());
+    }
+  }, []);
 
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
