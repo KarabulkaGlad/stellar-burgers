@@ -6,7 +6,7 @@ const URL = process.env.BURGER_API_URL;
 const checkResponse = <T>(res: Response): Promise<T> =>
   res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 
-type TServerResponse<T> = {
+export type TServerResponse<T> = {
   success: boolean;
 } & T;
 
@@ -61,13 +61,13 @@ type TIngredientsResponse = TServerResponse<{
   data: TIngredient[];
 }>;
 
-type TFeedsResponse = TServerResponse<{
+export type TFeedsResponse = TServerResponse<{
   orders: TOrder[];
   total: number;
   totalToday: number;
 }>;
 
-type TOrdersResponse = TServerResponse<{
+export type TOrdersResponse = TServerResponse<{
   data: TOrder[];
 }>;
 
@@ -104,7 +104,11 @@ type TNewOrderResponse = TServerResponse<{
   name: string;
 }>;
 
-export const orderBurgerApi = (data: string[]) =>
+export type TOrderBurgerRequest = {
+  ingredients: string[];
+};
+
+export const orderBurgerApi = (data: TOrderBurgerRequest) =>
   fetchWithRefresh<TNewOrderResponse>(`${URL}/orders`, {
     method: 'POST',
     headers: {
@@ -112,7 +116,7 @@ export const orderBurgerApi = (data: string[]) =>
       authorization: getCookie('accessToken')
     } as HeadersInit,
     body: JSON.stringify({
-      ingredients: data
+      ingredients: data.ingredients
     })
   }).then((data) => {
     if (data?.success) return data;
@@ -153,7 +157,11 @@ export const registerUserApi = (data: TRegisterData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      if (data?.success) return data;
+      if (data?.success) {
+        localStorage.setItem('refreshToken', data.refreshToken);
+        setCookie('accessToken', data.accessToken);
+        return data;
+      }
       return Promise.reject(data);
     });
 
@@ -172,13 +180,17 @@ export const loginUserApi = (data: TLoginData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      if (data?.success) return data;
+      if (data?.success) {
+        localStorage.setItem('refreshToken', data.refreshToken);
+        setCookie('accessToken', data.accessToken);
+        return data;
+      }
       return Promise.reject(data);
     });
 
 export type TForgotPasswordData = {
-  email: string
-}
+  email: string;
+};
 
 export const forgotPasswordApi = (data: TForgotPasswordData) =>
   fetch(`${URL}/password-reset`, {
@@ -194,10 +206,10 @@ export const forgotPasswordApi = (data: TForgotPasswordData) =>
       return Promise.reject(data);
     });
 
-export type TResetPasswordData = { 
-  password: string; 
+export type TResetPasswordData = {
+  password: string;
   token: string;
-}
+};
 
 export const resetPasswordApi = (data: TResetPasswordData) =>
   fetch(`${URL}/password-reset/reset`, {
@@ -213,7 +225,7 @@ export const resetPasswordApi = (data: TResetPasswordData) =>
       return Promise.reject(data);
     });
 
-type TUserResponse = TServerResponse<{ user: TUser }>;
+export type TUserResponse = TServerResponse<{ user: TUser }>;
 
 export const getUserApi = () =>
   fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
@@ -222,8 +234,9 @@ export const getUserApi = () =>
     } as HeadersInit
   });
 
-export const updateUserApi = (user: Partial<TRegisterData>) =>
-  fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
+export const updateUserApi = (user: Partial<TRegisterData>) => {
+  console.log('updateUserApi: ' + getCookie('accessToken'));
+  return fetchWithRefresh<TUserResponse>(`${URL}/auth/user`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -231,6 +244,7 @@ export const updateUserApi = (user: Partial<TRegisterData>) =>
     } as HeadersInit,
     body: JSON.stringify(user)
   });
+};
 
 export const logoutApi = () =>
   fetch(`${URL}/auth/logout`, {
@@ -241,4 +255,13 @@ export const logoutApi = () =>
     body: JSON.stringify({
       token: localStorage.getItem('refreshToken')
     })
-  }).then((res) => checkResponse<TServerResponse<{}>>(res));
+  })
+    .then((res) => checkResponse<TServerResponse<{}>>(res))
+    .then((data) => {
+      if (!data.success) {
+        return Promise.reject(data);
+      }
+      setCookie('accessToken', '');
+      localStorage.setItem('refreshToken', '');
+      return data;
+    });
