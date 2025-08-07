@@ -141,7 +141,7 @@ export type TRegisterData = {
   password: string;
 };
 
-type TAuthResponse = TServerResponse<{
+export type TAuthResponse = TServerResponse<{
   refreshToken: string;
   accessToken: string;
   user: TUser;
@@ -170,16 +170,21 @@ export type TLoginData = {
   password: string;
 };
 
-export const loginUserApi = (data: TLoginData) =>
-  fetch(`${URL}/auth/login`, {
+export const loginUserApi = (data: TLoginData) => {
+  console.log('FETCH CAll');
+  return fetch(`${URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
     },
     body: JSON.stringify(data)
   })
-    .then((res) => checkResponse<TAuthResponse>(res))
+    .then((res) => {
+      console.log('res ' + res);
+      return checkResponse<TAuthResponse>(res);
+    })
     .then((data) => {
+      console.log('data ' + data);
       if (data?.success) {
         localStorage.setItem('refreshToken', data.refreshToken);
         setCookie('accessToken', data.accessToken);
@@ -187,6 +192,7 @@ export const loginUserApi = (data: TLoginData) =>
       }
       return Promise.reject(data);
     });
+};
 
 export type TForgotPasswordData = {
   email: string;

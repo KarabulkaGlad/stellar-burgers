@@ -21,7 +21,7 @@ const createSlice = buildCreateSlice({
 
 type MovementDirection = 'up' | 'down';
 
-type TUserOrderSlice = {
+export type TUserOrderSlice = {
   orderData: OrderBurger;
   lastOrder?: TOrder;
   errors: {
