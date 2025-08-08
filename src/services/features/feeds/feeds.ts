@@ -13,7 +13,7 @@ const createSlice = buildCreateSlice({
 
 export type TFeeds = Omit<TFeedsResponse, 'success'>;
 
-type TFeedsUserSlice = {
+export type TFeedsUserSlice = {
   feeds: TFeeds;
   errors: {
     getFeedsError?: SerializedError;

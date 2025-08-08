@@ -27,6 +27,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
           text={`${constructorItems.bun.name} (верх)`}
           price={constructorItems.bun.price}
           thumbnail={constructorItems.bun.image}
+          extraClass='constructor-bun-top'
         />
       </div>
     ) : (
@@ -64,6 +65,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
           text={`${constructorItems.bun.name} (низ)`}
           price={constructorItems.bun.price}
           thumbnail={constructorItems.bun.image}
+          extraClass='constructor-bun-bottom'
         />
       </div>
     ) : (
@@ -78,13 +80,15 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         <p className={`text ${styles.text} mr-2`}>{price}</p>
         <CurrencyIcon type='primary' />
       </div>
-      <Button
-        htmlType='button'
-        type='primary'
-        size='large'
-        children='Оформить заказ'
-        onClick={onOrderClick}
-      />
+      <div data-testid='order-button'>
+        <Button
+          htmlType='button'
+          type='primary'
+          size='large'
+          children='Оформить заказ'
+          onClick={onOrderClick}
+        />
+      </div>
     </div>
 
     {orderRequest && (

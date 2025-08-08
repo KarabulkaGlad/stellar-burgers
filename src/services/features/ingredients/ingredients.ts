@@ -12,7 +12,7 @@ const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator }
 });
 
-type TIngredientsSlice = {
+export type TIngredientsSlice = {
   ingredients: TIngredient[];
   errors: {
     getIngredientsError?: SerializedError;
@@ -58,7 +58,7 @@ const ingredientsSlice = createSlice({
   }
 });
 
-export const selectIngredientById = (id?: string) => (store: RootState) =>
+export const selectIngredientById = (id: string) => (store: RootState) =>
   store.ingredients.ingredients.find((el) => el._id === id);
 
 export const { getIngredients } = ingredientsSlice.actions;

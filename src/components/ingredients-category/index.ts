@@ -1,1 +1,1 @@
-export { IngredientsCategory } from './ingredients-category';
+export * from './ingredients-category';

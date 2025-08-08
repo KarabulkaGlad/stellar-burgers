@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "order": {
+    "_id": "mock-order-id",
+    "status": "done",
+    "name": "Test Burger",
+    "createdAt": "test",
+    "updatedAt": "test",
+    "number": 12345,
+    "ingredients": ["7", "1", "7"]
+  },
+  "name": "Test Burger"
+}
