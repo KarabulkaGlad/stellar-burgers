@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.9% </span>
+                <span class="strong">54.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>151/275</span>
+                <span class='fraction'>145/267</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.9% </span>
+                <span class="strong">54.3% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>151/275</span>
+                <span class='fraction'>145/267</span>
             </div>
         
             
@@ -330,15 +330,7 @@
 <a name='L265'></a><a href='#L265'>265</a>
 <a name='L266'></a><a href='#L266'>266</a>
 <a name='L267'></a><a href='#L267'>267</a>
-<a name='L268'></a><a href='#L268'>268</a>
-<a name='L269'></a><a href='#L269'>269</a>
-<a name='L270'></a><a href='#L270'>270</a>
-<a name='L271'></a><a href='#L271'>271</a>
-<a name='L272'></a><a href='#L272'>272</a>
-<a name='L273'></a><a href='#L273'>273</a>
-<a name='L274'></a><a href='#L274'>274</a>
-<a name='L275'></a><a href='#L275'>275</a>
-<a name='L276'></a><a href='#L276'>276</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L268'></a><a href='#L268'>268</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -374,8 +366,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -505,8 +495,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -529,11 +517,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -640,9 +624,7 @@ export const refreshToken = <span class="fstat-no" title="function not covered" 
 <span class="cstat-no" title="statement not covered" >      token: localStorage.getItem('refreshToken')</span>
 <span class="cstat-no" title="statement not covered" >    })</span>
 <span class="cstat-no" title="statement not covered" >  })</span>
-<span class="cstat-no" title="statement not covered" >    .then((res) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return checkResponse&lt;TRefreshResponse&gt;(res);</span>
-<span class="cstat-no" title="statement not covered" >    })</span>
+<span class="cstat-no" title="statement not covered" >    .then((res) =&gt; checkResponse&lt;TRefreshResponse&gt;(res))</span>
 <span class="cstat-no" title="statement not covered" >    .then((refreshData) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      if (!refreshData.success) {</span>
 <span class="cstat-no" title="statement not covered" >        return Promise.reject(refreshData);</span>
@@ -787,21 +769,16 @@ export type TLoginData = {
   password: string;
 };
 &nbsp;
-export const loginUserApi = (data: TLoginData) =&gt;{
-  console.log("FETCH CAll");
-  return fetch(`${URL}/auth/login`, {
+export const loginUserApi = (data: TLoginData) =&gt;
+  fetch(`${URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
     },
     body: JSON.stringify(data)
   })
-    .then((res) =&gt; {
-      console.log("res " + res)
-      return checkResponse&lt;TAuthResponse&gt;(res);
-    })
+    .then((res) =&gt; checkResponse&lt;TAuthResponse&gt;(res))
     .then((data) =&gt; {
-      console.log("data " + data)
       if (data<span class="branch-0 cbranch-no" title="branch not covered" >?.s</span>uccess) {
         localStorage.setItem('refreshToken', data.refreshToken);
         setCookie('accessToken', data.accessToken);
@@ -809,7 +786,6 @@ export const loginUserApi = (data: TLoginData) =&gt;{
       }
 <span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >      return Promise.reject(data);</span></span>
     });
-}
 &nbsp;
 export type TForgotPasswordData = {
   email: string;
@@ -895,7 +871,7 @@ export const logoutApi = () =&gt;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-07T12:44:44.329Z
+                at 2025-08-08T10:41:05.432Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

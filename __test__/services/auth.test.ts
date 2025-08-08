@@ -1,12 +1,12 @@
 import * as api from '@api'; 
 import { configureStore } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { authUserReducer } from '../src/services/features/auth-user/auth-user';
-import { authReducer, forgotPassword, loginUser, logoutUser, registerUser, resetPassword, setPathToReturnAfterAuth } from '../src/services/features/auth/auth';
-import { getCookie } from '../src/utils/cookie';
+import { authUserReducer } from '../../src/services/features/auth-user/auth-user';
+import { authReducer, forgotPassword, loginUser, logoutUser, registerUser, resetPassword, setPathToReturnAfterAuth } from '../../src/services/features/auth/auth';
+import { getCookie } from '../../src/utils/cookie';
 import { TLoginData } from '@api';
-import { dummyAuthState, dummyAuthUserState, dummyUserOrderState } from './constants';
-import { userOrderReducer } from '../src/services/features/user-order/user-order';
+import { dummyAuthState, dummyAuthUserState, dummyUserOrderState } from '../constants';
+import { userOrderReducer } from '../../src/services/features/user-order/user-order';
 
 beforeEach(() => {
   localStorage.clear();
@@ -39,7 +39,7 @@ describe('auth reduser', () => {
             user: user,
             success: true,
         };
-        jest.mock('../src/utils/cookie', () => ({
+        jest.mock('../../src/utils/cookie', () => ({
             setCookie: jest.fn(),
             getCookie: jest.fn(() => 'test access')
         }));
@@ -99,7 +99,7 @@ describe('auth reduser', () => {
             user: user,
             success: true,
         };
-        jest.mock('../src/utils/cookie', () => ({
+        jest.mock('../../src/utils/cookie', () => ({
             setCookie: jest.fn(),
             getCookie: jest.fn(() => 'test access')
         }));

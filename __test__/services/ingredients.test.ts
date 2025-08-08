@@ -1,8 +1,8 @@
 import { TIngredient } from "@utils-types";
-import { getIngredients, ingredientsReducer, selectIngredientById, TIngredientsSlice } from "../src/services/features/ingredients/ingredients";
+import { getIngredients, ingredientsReducer, selectIngredientById, TIngredientsSlice } from "../../src/services/features/ingredients/ingredients";
 import * as api from '@api'; 
 import { configureStore } from "@reduxjs/toolkit";
-import { dummyAuthState, dummyAuthUserState, dummyFeedsState, dummyIngredientsState, dummyUserOrderState } from "./constants";
+import { dummyAuthState, dummyAuthUserState, dummyFeedsState, dummyIngredientsState, dummyUserOrderState } from "../constants";
 
 jest.mock('@api'); 
 

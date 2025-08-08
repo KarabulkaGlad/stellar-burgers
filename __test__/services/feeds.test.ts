@@ -1,7 +1,7 @@
 import * as api from '@api'; 
 import { configureStore } from "@reduxjs/toolkit";
-import { feedsReducer, getFeeds } from '../src/services/features/feeds/feeds';
-import { EMPTY_FEEDS } from '../src/constants/constants';
+import { feedsReducer, getFeeds } from '../../src/services/features/feeds/feeds';
+import { EMPTY_FEEDS } from '../../src/constants/constants';
 
 jest.mock('@api'); 
 

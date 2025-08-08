@@ -1,11 +1,11 @@
 import { OrderBurger, TConstructorIngredient, TOrder } from "@utils-types"
-import { addBunToOrder, addIngredientToOrder, createOrder, moveOneStepIngredienInOrder, removeIngredientFromOrder, TUserOrderSlice, userOrderReducer } from "../src/services/features/user-order/user-order"
+import { addBunToOrder, addIngredientToOrder, createOrder, moveOneStepIngredienInOrder, removeIngredientFromOrder, TUserOrderSlice, userOrderReducer } from "../../src/services/features/user-order/user-order"
 import { configureStore } from "@reduxjs/toolkit"
 import * as api from '@api'; 
-import { EMPTY_ORDER } from "../src/constants/constants";
-import { dummyUserOrderState } from "./constants";
-import { feedsReducer } from "../src/services/features/feeds/feeds";
-import { authUserReducer } from "../src/services/features/auth-user/auth-user";
+import { EMPTY_ORDER } from "../../src/constants/constants";
+import { dummyUserOrderState } from "../constants";
+import { feedsReducer } from "../../src/services/features/feeds/feeds";
+import { authUserReducer } from "../../src/services/features/auth-user/auth-user";
 
 jest.mock('@api'); 
 

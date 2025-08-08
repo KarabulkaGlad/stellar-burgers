@@ -1,9 +1,9 @@
 import * as api from '@api'; 
 import { configureStore } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { authUserReducer, getAuthUser, getOrdersAuthUser, updateAuthUser } from '../src/services/features/auth-user/auth-user';
-import { dummyAuthUserState } from './constants';
-import { authReducer } from '../src/services/features/auth/auth';
+import { authUserReducer, getAuthUser, getOrdersAuthUser, updateAuthUser } from '../../src/services/features/auth-user/auth-user';
+import { dummyAuthUserState } from '../constants';
+import { authReducer } from '../../src/services/features/auth/auth';
 
 jest.mock('@api'); 
 
