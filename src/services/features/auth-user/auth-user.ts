@@ -20,7 +20,7 @@ const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator }
 });
 
-type TAuthUserSlice = {
+export type TAuthUserSlice = {
   user: TUser;
   orders: TOrder[];
   isOrdersReceived: boolean;
@@ -34,7 +34,6 @@ type TAuthUserSlice = {
     isGetUserPending: boolean;
     isUpdateUserPending: boolean;
     isGetOrdersPending: boolean;
-    isCreateOrderPending: boolean;
   };
 };
 
@@ -46,8 +45,7 @@ const initialState: TAuthUserSlice = {
   statuses: {
     isGetUserPending: false,
     isUpdateUserPending: false,
-    isGetOrdersPending: false,
-    isCreateOrderPending: false
+    isGetOrdersPending: false
   }
 };
 

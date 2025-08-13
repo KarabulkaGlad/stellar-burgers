@@ -22,7 +22,7 @@ const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator }
 });
 
-type TAuthSlice = {
+export type TAuthSlice = {
   isAuthenticated: boolean;
   isAuthChecked: boolean;
   pathToReturnAfterAuth: string;
@@ -91,6 +91,7 @@ const authSlice = createSlice({
           state.isAuthenticated = false;
         },
         fulfilled: (state, action) => {
+          console.log('test');
           state.statuses.isRegisterPending = false;
           state.isAuthenticated = action.payload.success;
         }

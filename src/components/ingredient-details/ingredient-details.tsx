@@ -10,7 +10,7 @@ export const IngredientDetails: FC = () => {
   /** TODO: взять переменную из стора */
   const { id } = useParams();
   const ingredientData = useSelector((state: RootState) => {
-    const selector = selectIngredientById(id);
+    const selector = selectIngredientById(id!);
     return selector(state);
   });
 
